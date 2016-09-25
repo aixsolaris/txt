@@ -10,6 +10,12 @@ http://www-cs-students.stanford.edu/~blynn/gitmagic/intl/pl/ch07.html#_m%C3%B3j_
 
 --------------
 
+konfiguracja gita
+
++ sshkey 
++ git config --global user.email "you@example.com"
++ git config --global user.name "Your Name"
+
  ssh
 # git@github.com:aixsolaris/script.git
 
