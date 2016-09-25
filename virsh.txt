@@ -1,0 +1,82 @@
+
+
+----
+
+virtual machine’s console: you can go through a serial console.
+
+grubby --update-kernel=ALL --args="console=ttyS0"
+
+REDHAT
+
+
+------------
+
+
+https://www.unixmen.com/fix-device-eth0-seem-present-delaying-initialization-error/
+
+Try to start Eth0 device
+
+# ifup eth0
+Device eth0 does not seem to be present, delaying initialisation
+
+To Solve this :
+
+Delete networking interface rules file so that it can be regenerated and reboot your CentOS system.
+
+# rm /etc/udev/rules.d/70-persistent-net.rules
+# reboot
+
+
+------------
+Fedora, CentOS 7:
+
+Note: you need to run virt-install as the root user.
+
+# virt-install --name rhel --ram 2048 --disk size=20,format=qcow2 --vcpus 2 \
+       --cdrom rhel-server-7.2_x86-64-dvd.iso \
+       --virt-type kvm --os-variant rhel7 --graphics spice
+
+Ubuntu :
+
+$ virt-install --name rhel --ram 2048 --disk size=20,path=$HOME/rhelvm.sda --vcpus 2 \
+       --cdrom rhel-server-7.2_x86-64-dvd.iso \
+       --virt-type kvm --os-variant rhel7
+
+------------
+exit from console
+
+Ctrl+]
+
+exit from virt-viwer 
+
+Left ->  Ctrl+Alt 
+
+----------------
+
+virsh default network
+
+# virsh net-define /usr/share/libvirt/networks/default.xml
+Network default defined from /usr/share/libvirt/networks/default.xml
+# virsh net-autostart default
+Network default marked as autostarted
+# virsh net-start default
+Network default started`
+
+
+
+$> virsh net-list --all
+$> brctl show
+$> sysctl net.bridge.bridge-nf-call-iptables
+$> iptables -L -v -n
+$> ps -ef | grep dnsmasq
+$> ifconfig -a
+$> cat /proc/sys/net/ipv4/ip_forward
+$> service libvirtd reload
+---------------------
+
+
+
+
+
+
+

@@ -1,0 +1,44 @@
+
+
+Linux Hard Disk Encryption With LUKS [ cryptsetup Command ]
+
+# yum install cryptsetup-luks
+
+ Configure LUKS partition
+
+# cryptsetup -y -v luksFormat /dev/xvdc
+
+# cryptsetup luksOpen /dev/xvdc backup2
+
+# ls -l /dev/mapper/backup2 
+
+# cryptsetup -v status backup2
+
+ Format LUKS partition
+
+# pv -tpreb /dev/zero | dd of=/dev/mapper/backup2 bs=128M
+
+# mkfs.ext4 /dev/mapper/backup2
+
+# mkdir /backup2
+# mount /dev/mapper/backup2 /backup2
+# df -H
+# cd /backup2
+# ls -l
+
+How do I mount or remount encrypted partition?
+
+# cryptsetup luksOpen /dev/xvdc backup2
+# mount /dev/mapper/backup2 /backup2
+# df -H
+# mount
+
+How do I change LUKS passphrase (password) for encrypted partition?
+
+# cryptsetup luksDump /dev/xvdc
+# cryptsetup luksAddKey /dev/xvdc
+
+Remove or delete the old password:
+
+# cryptsetup luksRemoveKey /dev/xvdc
+

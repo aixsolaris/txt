@@ -1,0 +1,14 @@
+
+
+
+
+    rrqm/s  oraz wrqm/s – średnia liczba połączonych żądań odczytu i zapisu wysłanych na sekundę do urządzenia
+    r/s oraz w/s – średnia liczba żądań odczytu i zapisu wysłanych na sekundę do urządzenia,
+    rkB/s oraz wkB/s – średnia liczba kilobajtów na sekundę odczytanych i zapisanych w urządzeniu,
+    avgrq-sz – średnia liczba sektorów na żądanie (zarówno odczyt jak i  zapis) – (rsec + wsec) / (r + w),
+    avgqu-sz – średnia długość kolejki żądań wysłanych do urządzenia,
+    await – średni czas oczekiwania na wykonanie żądania wysłanego do urządzenia. Obejmuje zarówno czas spędzony w kolejce do urządzenia jak i czas na realizację żądania przez urządzenie – await = czas_spędzony_w_kolejce + svctim,
+    svctim – średni czas w jakim urządzenie wykonało zlecone żądanie,
+    %util – procent swojego czasu jaki urządzenie poświęciło na realizację żądań
+
+    .

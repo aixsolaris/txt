@@ -1,0 +1,131 @@
+ 
+
+http://libguestfs.org/
+
+# yum install libguestfs-tools
+# yum -y install libguestfs libguestfs-tools*
+
+# sudo yum install libguestfs-tools      # Fedora/RHEL/CentOS
+# sudo apt-get install libguestfs-tools  # Debian/Ubuntu
+# guestfish --ro -i -a disk.img
+
+
+# guestfish --ro -i -a ./ba4332a7-cee8-4378-bc0a-876e625db154/1f6f8624-b9a7-4e0b-a799-2e84c38c1f9e -a ./6c249828-a458-4db1-99d5-ff3333d78fca/70b73ffe-3790-4154-b616-03044ebbd0d5 -a ./48f2d323-d967-47ad-a051-a8d395fec347/e9923137-096a-484a-8091-065a360ae314 -i edit /etc/passwd
+
+Changing the 'root' password on kvm qcow2 (images) for OpenStack or Virtualization Environments.
+
+Generate password
+# openssl passwd -1 "password"
+
+# guestfish --rw -a ./rhel-guest-image-7.1-20150224.0.x86_64.qcow2
+><fs> run
+><fs> list-filesystems
+><fs> mount /dev/sda1 /
+><fs> vi /etc/shadow   (<-- here paste previously password got from openssl)
+
+----------
+Mounting raw and qcow2 VM disk images
+
+losetup /dev/loop0 image.img
+kpartx -a /dev/loop0
+mount /dev/mapper/loop0p1 /mnt/image
+
+If LVM is present on image it could be initialized with:
+
+vgscan
+vgchange -ay
+mount /dev/VolGroupName/LogVolName /mnt/image
+
+umount /mnt/image
+vgchange -an VolGroupName
+killall qemu-nbd
+kpartx -d /dev/loop0
+losetup -d /dev/loop0
+
+----------------
+
+
+----------------
+Mount RAW disk
+
+$ qemu-img info brdisk-img.raw
+image: brdisk-img.raw
+file format: raw
+virtual size: 2.5G (2684354560 bytes)
+disk size: 695M
+
+$ mkdir {boot,rfs}
+$ sudo losetup /dev/loop0 brdisk-img.raw
+
+$ sudo fdisk -u -l /dev/loop0
+
+Disk /dev/loop0: 2684 MB, 2684354560 bytes
+255 heads, 63 sectors/track, 326 cylinders, total 5242880 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x56a8c587
+
+    Device Boot      Start         End      Blocks   Id  System
+/dev/loop0p1            2048     1026047      512000   83  Linux
+/dev/loop0p2         1026048     5242879     2108416   83  Linux
+
+$ sudo losetup -o $((512*2048)) /dev/loop1 /dev/loop0
+$ sudo losetup -o $((512*1026048)) /dev/loop2 /dev/loop0
+$ sudo mount /dev/loop1 boot
+$ sudo mount /dev/loop2 rfs
+$ ls boot
+grub
+$ ls rfs
+bin  etc   lib      lost+found  mnt  proc  run   sys  usr
+dev  home  linuxrc  media       opt  root  sbin  tmp  var
+
+$ sudo umount boot 
+$ sudo umount rfs
+$ sudo losetup -d /dev/loop2
+$ sudo losetup -d /dev/loop1
+$ sudo losetup -d /dev/loop0
+
+----------------
+
+Mounting a qcow2 disk image
+
+$ qemu-img info brdisk-img.qcow2 
+image: brdisk-img.qcow2
+file format: qcow2
+virtual size: 2.5G (2684354560 bytes)
+disk size: 701M
+cluster_size: 65536
+
+$ mkdir {boot,rfs}
+$ sudo modprobe nbd
+$ sudo qemu-nbd -c /dev/nbd0 ${PWD}/brdisk-img.qcow2
+
+$ sudo fdisk -l -u /dev/nbd0
+
+Disk /dev/nbd0: 2684 MB, 2684354560 bytes
+255 heads, 63 sectors/track, 326 cylinders, total 5242880 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x56a8c587
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/nbd0p1            2048     1026047      512000   83  Linux
+/dev/nbd0p2         1026048     5242879     2108416   83  Linux
+
+$ sudo mount /dev/nbd0p1 boot # i.e. mount -o offset=$((512*2048)) /dev/nbd0 boot/
+$ sudo mount /dev/nbd0p2 rfs  # i.e. mount -o offset=$((512*1026048)) /dev/nbd0 rfs
+
+$ ls boot/
+grub
+$ ls rfs/
+bin  etc   lib      lost+found  mnt  proc  run   sys  usr
+dev  home  linuxrc  media       opt  root  sbin  tmp  var
+
+$ sudo umount rfs
+$ sudo umount boot
+$ sudo qemu-nbd -d /dev/nbd0
+/dev/nbd0 disconnected
+
+-------------------

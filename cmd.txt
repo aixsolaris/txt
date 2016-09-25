@@ -1,5 +1,39 @@
 
 
+--------
+
+$> strace -ttt -f libvirtd
+
+-----------------
+
+
+REDHAT developer licence. Register system
+
+[root@server1 ~]# subscription-manager register --username admin-example --password secret --autosubscribe
+
+----
+ useradd -m username -s /bin/bash -G wheel
+ echo "username:0fWPoVBf"   | chpasswd -c SHA512
+
+-----------
+ sqlite3
+ sqlitebrowser
+
+---
+https://www.drupal.org/node/27882
+
+Convert Drupal to static site using HTTrack and deploy to GitHub Pages 
+
+------------
+
+dnstop
+------------
+
+
+pkcon refresh force -c -1
+
+
+-----------------
 # odzyskiwanie plików z EXT 
 extundelete /dev/sdb2 --restore-all
 

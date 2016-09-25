@@ -1,0 +1,93 @@
+
+http://www.projectatomic.io/blog/2015/06/notes-on-fedora-centos-and-docker-storage-drivers/
+
+
+Using Containers and Images
+Docker Syntax 	Description
+sudo docker run -t -i user/image 	Runs an image, creating a container and changing the command prompt to within the container.
+sudo docker run -p 80:3000 -t -i user/image 	Similar to the command above but with port forwarding.
+ctrl+p then ctrl+q 	From the container’s command prompt, detach and return to the host’s prompt.
+sudo docker attach 1aa 	Changes the command prompt from the host to a running container. Replace 1aa with a container ID.
+sudo docker ps -a 	List all container instances, with their ID, and status.
+sudo docker images 	Lists all images on the local machine.
+sudo docker rm -f 1aa 	Delete a container. Replace 1aa with a container ID.
+sudo docker commit 1aa user/image 	Save a container as an image. Replace 1aa with a container ID.
+
+exit or Ctrl-D - finish work container
+
+#### example #####
+docker run linode/lamp /bin/echo 'aaaaaaaaaaaaaaaa'
+docker run ubuntu /bin/echo 'aaaaaaaaaaaaaaaa'
+
+docker logs nazwa_lub_id_contenera
+docker version
+docker attach nazwa_lub_id_contenera - podłączenie do kontenera
+docker images - lokalne z których można wystartować docker
+docker ps -l
+docker top nazwa_lub_id_contenera
+docker rmi nazwa_lub_id_contenera
+docker inspect nazwa_lub_id_contenera
+docker stop nazwa_lub_id_contenera
+docker rm nazwa_lub_id_contenera
+docker network inspect bridge
+docker port nazwa_lub_id_contenera
+docker port nazwa_lub_id_contenera numer_portu
+
+# uruchamiamy squid w docker + startup systemd
+docker run --name squid -d --restart=always --publish 3128:3128 --volume /srv/docker/squid/cashe:/var/spool/squid3 sameersbn/squid
+----> show logs
+docker exec -it squid tail -f /var/log/squid3/access.log
+---->shell
+docker exec -it squid bash
+
++ confiiguracja systemd. systemctrl start docker-squid.service
+
+# network
+docker network ls
+
+
+# update and committing image
+docker run -t -i kontener /bin/bash
+root#id_kontener# apt-get install mc
+docker commit -m "Zainstalowane mc" -a "ja ja" id_kontener ubuntu:moja_nazwa_nowej_wersji
+
+# building an images form Dockerfile
+touch Dockerfile
+vim Dockerfile
+# This is a comment
+FROM ubuntu:14.04
+MAINTAINER Kate Smith <ksmith@example.com>
+RUN apt-get update && apt-get install -y ruby ruby-dev
+RUN gem install sinatra
+# end file
+docker build -t nazwa/nazwa .
+
+# setting tags on an image
+docker tag 0a6ba66e537a  docker.io/hello-world:dev
+
+docker run -d -p 80:5000 training/webapp python app.py
+docker run -d -p 8000-9000:5000 training/webapp python app.py
+docker run -d -p 127.0.0.1:80:5000 training/webapp python app.py
+docker run -d -p 127.0.0.1::5000 training/webapp python app.py
+docker run -d -p 127.0.0.1:80:5000/udp training/webapp python app.py
+docker run -d -P --name web training/webapp python app.py
+
+
+##################
+
+Download image
+
+docker pull ubuntu
+
+docker 
+
+-i starts interactive cntainer
+-t creates a pseudo  TTY attaches stdin and stdout
+-d run contener in background
+-P map any required network ports inside our container to our host.
+-m allows us to specify a commit message
+-a specify an autor for our update
+
+
+
+
