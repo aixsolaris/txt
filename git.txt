@@ -1,0 +1,175 @@
+
+--------------
+http://rogerdudler.github.io/git-guide/index.pl.html
+
+http://www-cs-students.stanford.edu/~blynn/gitmagic/intl/pl/ch07.html#_m%C3%B3j_emphasis_commit_emphasis_jest_za_du%C5%BCy
+
+--------------
+
+# git gui
+
+--------------
+
+ ssh
+# git@github.com:aixsolaris/script.git
+
+# git clone git@github.com:aixsolaris/txt.git
+
+…or create a new repository on the command line
+
+# echo "# script" >> README.md
+# git init
+# git add README.md
+# git commit -m "first commit"
+# git remote add origin git@github.com:aixsolaris/script.git
+# git push -u origin master
+
+…or push an existing repository from the command line
+
+# git remote add origin git@github.com:aixsolaris/script.git
+# git push -u origin master
+
+ https
+
+# https://github.com/aixsolaris/script.git
+
+…or create a new repository on the command line
+
+# echo "# script" >> README.md
+# git init
+# git add README.md
+# git commit -m "first commit"
+# git remote add origin https://github.com/aixsolaris/script.git
+# git push -u origin master
+
+…or push an existing repository from the command line
+
+# git remote add origin https://github.com/aixsolaris/script.git
+# git push -u origin master
+
+--------------
+
+# Zabezpieczenie obecnego stanu
+$ git init
+$ git add .
+$ git commit -m "Mój pierwszy commit"
+$ git reset --hard  # przywrucenie zmian do ostatniego commitu. załaduj jakiś starszy stan i skasuj wszystkie nowsze niż właśnie ładowany.
+$ git commit -a -m "Mój następny commit" 
+
+# Dodanie, kasowanie i zmiana nazwy
+$ git add readme.txt Dokumentacja
+$ git rm ramsch.h archaiczne.c
+$ git rm -r obciążający/materiał/
+$ git mv bug.c feature.c
+
+#Zaawansowane anulowanie/przywracanie
+$ git log
+$ git reset --hard 766f # trwałe przywrucenie i skasowanie poprzednich zmian
+$ git checkout 82f5 # przejcie tylko na moment. Jezeli dokonamy zmiany commitem zrobisz branch alternatywna rzeczywistosć w sosunku do zmian juz dokonanych 
+$ git checkout master # sprowadza do teraźniejszosci. Załaduj stary stan, grając dalej, twój stan będzie się różnił od nowszych zapamiętanych. Każdy stan, który zapamiętasz od teraz, powstanie jako osobna gałęź (branch), reprezentującym alternatywną rzeczywistość.
+$ git checkout 82f5 jeden.plik inny.plik # przywracanie tylko wybranych plików
+$ git checkout :/"Mój pierwszy c"
+$ git checkout master~5
+
+# Przywracanie
+$ git commit -a
+$ git revert 1b6d # To polecenie wymaże commit o wybranym hashu. Ten rewers zostanie zapamiętany jednak jako nowy commit, co można sprawdzić poleceniem git log.
+
+$ git clone localhost:/home/jreizer/git/dzien3/
+$ 
+
+# Najnowszy stan na klonie
+$ git pull
+
+A co robiłem ostatnio?
+$ git diff
+$ git diff "@{yesterday}"
+
+########### github
+# commit na serwer githuba
+
+# 1
+$$ git commit -a -m "kolejny"
+$$ git remote add hub https://github.com/aixsolaris/Linux.git
+$$ git push -f hub master
+Username for 'https://github.com': aixsolaris
+Password for 'https://aixsolaris@github.com': 
+Counting objects: 3, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 278 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://github.com/aixsolaris/Linux.git
+ + a20d440...a8a920b master -> master (forced update)
+
+# 2
+$$ git commit -a -m "kolejny"
+$$ git remote add onet https://github.com/aixsolaris/Linux.git
+$$ git push  git@github.com:aixsolaris/Linux.git HEAD
+Counting objects: 2, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 266 bytes | 0 bytes/s, done.
+Total 2 (delta 0), reused 0 (delta 0)
+To git@github.com:aixsolaris/Linux.git
+   a8a920b..bef2904  HEAD -> master
+#3 
+
+$$ touch gama
+$$ git add gama
+$$ git commit -a -m "commit gama"
+[master 339a25e] commit gama
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 gama
+$$ git push  git@github.com:aixsolaris/Linux.git HEAD
+Counting objects: 2, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 229 bytes | 0 bytes/s, done.
+Total 2 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local objects.
+To git@github.com:aixsolaris/Linux.git
+   bef2904..339a25e  HEAD -> master
+
+########### github - trzeba podać usera i hasło
+
+git init
+git add -A
+git commit -m 'Added my project'
+git remote add ala1  https://github.com/aixsolaris/Linux.git
+git push -u -f origin master
+
+----------------
+
+#utwórz nowe repozytorium
+#utwórz katalog, wejdź do niego i wykonaj
+git init
+touch file1 file2 file3
+
+# add & commit
+# zmiany (dodać je do Index) używając
+git add <filename>
+git add *
+
+# To pierwszy krok podczas pracy z gitem.
+# Aby rzeczywiście zatwierdzić te zmiany użyj
+git commit -m "Commit message"
+
+#Teraz plik jest zatwierdzony w HEAD, ale nie w zdalnym repozytorium.
+
+utwórz nową gałąź o nazwie "feature_x" i przełącz się na nią
+# git checkout -b feature_x
+przełącz się z powrotem na master
+# git checkout master
+i usuń gałąź
+# git branch -d feature_x
+# gałąź nie jest dostępna dla innych dopóki nie wyślesz jej do zdalnego repozytorium
+# git push origin <branch>
+
+-----------
+
+
+
+
+
+

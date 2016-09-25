@@ -1,0 +1,55 @@
+
+
+# odzyskiwanie plików z EXT 
+extundelete /dev/sdb2 --restore-all
+
+------
+
+apachetop
+ftptop
+mytop
+iotop
+ntopng
+iftop
+jnettop
+bandwidthd
+ethtool
+nethogs
+iptraf
+ngrep
+bmon
+iptstate
+darkstat
+vnstat
+ss
+justniffer
+glances
+saidar
+discus
+collect
+goaccess
+multitail
+strace
+whowatch
+
+------- 
+
+drukuk wszystko za ostatnim /
+
+# echo "nie tto nie tak ala/nie/ dupa /aa to co"|sed 's:.*/::sed 's:.*/::'
+
+---
+
+# host -t srv _ldap._tcp  | sed "s/.*[ ]\([^ ]*\)[.]$/\1/g" | xargs -i ping -c 1 {} | grep -E "(statistics|avg)" | sed "s/^--- \([^ ]*\).*/,\1:/g"|tr -d "\n" | tr "," "\n" | sed "1d;s|^\([^:]*\).*=[^/]*/\([^/]*\).*|\2\t\1|g" |sort -n
+
+---
+
+Insert a date before the suffix of all the json files in a directory
+# for i in `ls`; do mv "$i" "`echo $i | sed s/.json/_20160428.json/`"; done
+
+---
+block facebook
+
+# ASN=32934; for s in $(whois -H -h riswhois.ripe.net -- -F -K -i $ASN | grep -v "^$" | grep -v "^%" | awk '{ print $2 }' ); do echo "  blocking $s"; sudo iptables -A INPUT -s $s -j REJECT &> /dev/null || sudo ip6tables -A INPUT -s $s -j REJECT; done
+
+------------
