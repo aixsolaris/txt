@@ -1,5 +1,157 @@
 
 
+-------------------
+xming - uruchamianie xclock po przelogowaniu na su - user
+
+http://four-eyes.net/2011/11/putty-x11-forwarding-stops-working-after-su/
+
+First try to forward xclock
+
+[user@localhost ~]$ xclock
+Xlib: connection to "localhost:10.0" refused by server
+Xlib: PuTTY X11 proxy: MIT-MAGIC-COOKIE-1 data did not match
+Error: Can't open display: localhost:10.0
+Notice the MIT-MAGIC-COOKIE-1 error  next lets see what xauthorization is setup. Drop back down to the user you sud from:
+
+[user@localhost ~]$ exit
+[root@localhost ~]# xauth list
+localhost/unix:10  MIT-MAGIC-COOKIE-1  1234567890abcdefghijklmnopqrstuv
+Now lets add this magic cookie to the authorized x11 terminals list for the user we need to su to:
+
+[root@localhost ~]# su - user
+[user@localhost ~]$ xauth add localhost/unix:10  MIT-MAGIC-COOKIE-1  1234567890abcdefghijklmnopqrstuv
+[user@localhost ~]$ xclock
+
+-------- 
+ DISPLAY=:0.0
+ export DISPLAY
+ xhost +
+ su - oracle  OR ssh user@adres
+ DISPLAY=:0.0
+ export DISPLAY
+
+-----------
+
+zabranie uprawnien do np. stronki
+http://stronka:7006
+
+# chmod 755 stronka.pl
+# chmod 0 stronka.pl
+
+----
+
+ synchronizacha pomiedzy Linux -> Windows
+#sshpass -e rsync --progress -avz -e ssh local:/home/username/.ssh /mnt/SYNCE/linux/
+
+---
+
+Kopiowanie root partycji z sudo 
+
+Add this to /etc/sudoers:
+
+rsyncuser ALL= NOPASSWD:/usr/bin/rsync 
+
+# rsync -aAXv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} -e "ssh" --rsync-path="sudo rsync" rsyncuser@remoteserver:/ /archive/
+
+---
+ 
+# dnf install -y fuse-sshfs
+# sshfs alexis@192.168.1.12:/home/ /mnt/remote/
+
+------
+# uruchomienie lokalnego skryptu serwerku
+sshpas -e ssh cmsweb1p-sec 'bash -s' < ssh_cmd.sh
+
+
+----
+
+ copy root to new device
+#rsync -aHux --exclude=/proc/* --exclude=/sys/* /* /mnt/target/
+
+----
+ Migrate Server with rsync
+# rsync -ayz -e ssh --exclude=/proc --exclude=/sys --exclude=/dev / root@NEWHOST:/MNTDIR
+---
+ zajętość ram przez java
+# ps -eo pmem,comm | grep java | awk '{sum+=$1} END {print sum " % of RAM"}'
+---
+ zlicz linie 
+# egrep -v '^\s*($|#)' $(git grep -l '#!/bin/.*sh' *) | wc -l
+---
+ bez komentarzy plik
+# grep -Ev '^(#.*|$)|#.*' file
+
+---
+
+ smnp analyze
+#tcpdump -l -s0 -w - tcp dst port 25 | strings | grep -i 'MAIL FROM\|RCPT TO'
+
+---
+
+Recompress all files in current directory from gzip to bzip2
+# find . -type f -name '*.gz'|awk '{print "zcat", $1, "| bzip2 -c >", $0.".tmp", "&& rename", "s/.gz.tmp/.bz2/", "*.gz.tmp", "&& rm", $0}'|bash
+
+---
+ Prace administracyjne na WWW
+# while true; do nc -l -p 80 < serwis.html; done
+
+---
+
+ find all ip in /etc
+#find /etc -exec grep '[0-9][0-9]*[.][0-9][0-9]*[.][0-9][0-9]*[.][0-9][0-9]*' {} \;
+
+---
+
+Find last modified files in a directory and its subdirectories
+# find . -type f -print0 | xargs -0 stat -c'%Y :%y %12s %n' | sort -nr | cut -d: -f2- | head
+
+---
+ Recursive find and replace in h an cpp files
+#find . -name "*.h" -o -name "*.cpp" | xargs sed -i 's/addVertexes/addVertices/g'
+
+---
+
+Filter IP's in apache access logs based on use
+# cat /var/log/apache2/access_logs | cut -d ' ' -f 1 | uniq -c | sort -n
+
+---
+Delete all empty lines from a file with vim
+
+:v/./d
+
+---
+ 
+open port
+# lsof -i -n -P
+# lsof -i -n | grep ESTABLISHED
+# lsof -i -P +c 0 +M | grep -i "$1"
+# lsof -iTCP:8080 -sTCP:LISTEN
+# netstat -an | grep --color -i -E 'listen|listening'
+# netstat -town
+---
+
+# ps wwwwuax
+----
+ wyświetla pełną komendę uruchomionego procesu
+# ps -efwww
+
+
+-----
+
+# systemctl -t service 
+# systemctl list-unit-files -t service 
+# systemctl disable smartd 
+# chkconfig --list 
+
+--------
+
+locust
+172.0.0.1:8089
+
+# locust --host=http://www.onet.pl
+
+# ss -t4
+# ss -t4l
 --------
 
 $> strace -ttt -f libvirtd

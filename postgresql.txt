@@ -1,0 +1,7 @@
+
+
+
+\l list dabases
+\l+ extend list witch size, tablespace, escription
+
+

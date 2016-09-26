@@ -129,3 +129,19 @@ $ sudo qemu-nbd -d /dev/nbd0
 /dev/nbd0 disconnected
 
 -------------------
+
+
+---------------------------
+
+Mount VDI partition from Virutalbox
+
+ modprobe nbd
+ qemu-nbd -c /dev/nbd0 FedoraServer.vdi 
+ kpartx -a /dev/nbd0 
+ fdisk -l
+ lvmdiskscan 
+ lvscan 
+ mount /dev/vmaix/home /tmp/vbox/
+
+-----------------
+

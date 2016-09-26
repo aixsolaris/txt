@@ -1,0 +1,16 @@
+extensions
+
+Advanced Volume Mixer 
+Applications Menu
+Chat Status
+ClickSaver
+Impatience
+Launch new instance
+NetSpeed
+Places Status Indicator
+Removable Drive Menu
+system-monitor
+TaskBar
+TopIcons
+User Themes
+
