@@ -1,0 +1,11 @@
+[Unit]
+Description=squid-container
+After=docker.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/docker run -i -d -t --restart=no --name squid  -p 3128:3128 -v /srv/docker/squid/cashe:/var/spool/squid3 sameersbn/squid
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,18 @@
+## systemctl enable docker-squid.service
+## Created symlink from /etc/systemd/system/local.target.wants/docker-squid.service to /usr/lib/systemd/system/docker-squid.service.
+
+[Unit]
+Description=Squid Proxy
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+#ExecStartPre=-/usr/bin/docker kill squid
+#ExecStartPre=-/usr/bin/docker rm squid
+ExecStart=/usr/bin/docker start -a squid1 
+ExecStop=/usr/bin/docker stop -t 2 squid1
+
+[Install]
+WantedBy=local.target
+

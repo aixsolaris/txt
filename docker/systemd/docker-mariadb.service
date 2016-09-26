@@ -1,0 +1,19 @@
+
+## /etc/systemd/system/multi-user.target.wants/ directory.
+[Unit]
+Description=MariaDB database
+Requires=docker.service
+After=docker.service
+
+[Service]
+User=goldmann
+Restart=on-failure
+RestartSec=10
+ExecStartPre=-/usr/bin/docker kill mariadb
+ExecStartPre=-/usr/bin/docker rm mariadb
+ExecStart=/usr/bin/docker run --name=mariadb fedora/mariadb
+ExecStop=-/usr/bin/docker stop mariadb
+
+[Install]
+WantedBy=multi-user.target
+

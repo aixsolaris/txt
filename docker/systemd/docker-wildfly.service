@@ -1,0 +1,18 @@
+
+[Unit]
+Description=WildFly node
+Requires=docker-mariadb.service
+After=docker-mariadb.service
+
+[Service]
+User=goldmann
+Restart=on-failure
+RestartSec=10
+Environment="JAVA_OPTS=-Xms64m -Xmx512m"
+ExecStartPre=-/usr/bin/docker kill wildfly-mariadb
+ExecStartPre=-/usr/bin/docker rm wildfly-mariadb
+ExecStart=/usr/bin/docker run --name wildfly --link mariadb:mariadb -p 8080:8080 wildfly-mariadb
+ExecStop=-/usr/bin/docker stop wildfly-mariadb
+
+[Install]
+WantedBy=multi-user.target
