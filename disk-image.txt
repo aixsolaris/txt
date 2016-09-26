@@ -142,6 +142,3 @@ Mount VDI partition from Virutalbox
  lvmdiskscan 
  lvscan 
  mount /dev/vmaix/home /tmp/vbox/
-
------------------
-
