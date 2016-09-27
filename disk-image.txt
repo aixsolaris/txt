@@ -1,4 +1,34 @@
  
+ --------------
+ Reduce size of ext3/ext4 LVM partition
+ 
+# df -h /home/
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/mapper/vg_cloud-LogVol00
+12G  9.2G  1.9G  84% /home
+
+ Umount the filesystem
+# umount /home/
+
+ Check the filesystem for Errors using e2fsck command.
+# e2fsck -f /dev/mapper/vg_cloud-LogVol00
+ 
+ Shrink the size of /home to desire size.
+# resize2fs /dev/mapper/vg_cloud-LogVol00 10G
+
+ Now reduce the size using lvreduce command.
+# lvreduce -L 10G /dev/mapper/vg_cloud-LogVol00
+
+(Optional) For the safer side , now check the reduced filesystem for errors
+# e2fsck -f /dev/mapper/vg_cloud-LogVol00
+
+Mount the file system and verify the size.
+# mount /home/
+# df -h /home/
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/mapper/vg_cloud-LogVol00
+9.9G  9.2G  208M  98% /home
+
 ------------------
 
 http://libguestfs.org/
