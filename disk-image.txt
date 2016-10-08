@@ -1,4 +1,17 @@
- 
+
+
+--------------
+
+sprawdzenie partycji w pliku dysku wirutalizacji np. kvm 
+# virt-filesystems --long --parts --blkdevs -h -a fef36e7a-0958-4edf-ab5f-33af7fb26257 
+
+----------
+
+create file alled newdisk
+# truncate -s 30G newdisk
+# cp startydysk tmp
+# virt-resize tmp newdisk --expand /dev/sda2 --LV-expand /dev/mapper/vg_moriarty-lv_root
+
  --------------
  Reduce size of ext3/ext4 LVM partition
  
@@ -29,6 +42,32 @@ Filesystem            Size  Used Avail Use% Mounted on
 /dev/mapper/vg_cloud-LogVol00
 9.9G  9.2G  208M  98% /home
 
+create new raw image 10G
+# trancate -s 10G newimagename.raw
+
+Apply the shinked partitions to the new small disk image
+# umount /home
+# virt-resize --shrink /dev/sda1 filestarydysk.raw newimagename.raw
+
+Rename the new disk to match th KVM guests
+# mv filestarydysk.raw filestartydysk.raw.bak
+# mv newimagename.raw filesystemdysk.raw
+# chmod a+x filesystemdisk.raw
+
+
+
+-----------------
+	Using resize2fs is much much easier
+
+	resize2fs -M xxx.img
+
+	you will be asked to e2fsck first - so:
+
+	e2fsck -f -y xxx.img
+
+	(image must NOT be mounted!)
+
+	Note: this will only work if the image is of a single partition, if it's a whole block device with mutiple partitions see above answer...
 ------------------
 
 http://libguestfs.org/

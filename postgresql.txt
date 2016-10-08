@@ -3,5 +3,17 @@
 
 \l list dabases
 \l+ extend list witch size, tablespace, escription
+\dt - wylistowanie tabel
+\dt+ 
+\d+ tablename - strukura tabeli
 
 
+ostatnie 10 wierszy
+# select id, length, last_modified from datastore order by id desc LIMIT 10;
+
+pierwsze 10 wierszy
+# select id, length, last_modified from datastore order by id asc LIMIT 10;
+
+usuniecie danych z tabeli
+# TRUNCATE table_name;
+# DELETE FROM table_name;
