@@ -1,5 +1,34 @@
 
 
+----------------
+LUKS passphrases: Changing, adding, removing
+
+init 3
+umount /home
+cryptsetup luksClose home
+cryptsetup luksChangeKey /dev/vg00/lv02
+< verify and change your passphrase here>
+cryptsetup luksOpen /dev/vg00/lv02 home
+mount /home
+
+cryptsetup luksAddKey /dev/vg00/lv02
+< enter any current phrase - and add new phrase >
+umount /home
+cryptsetup luksClose home
+cryptsetup luksOpen /dev/vg00/lv02 home
+< enter our new passphrase >
+mount /home
+
+umount /home
+cryptsetup lulsClose home
+cryptsetup luksRemoveKey /dev/vg00/lv02
+< enter the passphrase you want to remove >
+cryptsetup luksOpen /dev/vg00/lv02 home
+< enter the the one you removed, to verify that it is gone >
+mount /home
+
+-----------------
+
 Linux Hard Disk Encryption With LUKS [ cryptsetup Command ]
 
 # yum install cryptsetup-luks

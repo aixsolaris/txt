@@ -1,6 +1,69 @@
 
 
 --------------
+sprawdzone na cmsdb z lvm
+
+How to shrink a KVM image filesystem
+
+# cd /var/lib/libvirt/images
+ 
+# ls -al
+ total 189398552
+ drwxrwxr-x. 2 root root
+ drwxr-xr-x. 10 root root
+ -rw-------. 1 root root 85899345920 Sep 16 09:33 Fedora_20_ext3.img
+ -rw-r--r--. 1 root root 85912715264 Mar 28 14:18 Virtual_Client_for_Linux_Ubuntu_ 12-KVM.qcow2
+ -rw-rw-r--. 1 root root 9 Mar 28 14:09 Virtual_Client_for_Linux_Ubuntu_12- KVM.qcow2.type
+ -rw-r--r--. 1 root root 32217432064 Aug 28 16:13 Virtual_Client_for_Linux_Windows_ 7-KVM.qcow2
+ -rw-rw-r--. 1 root root 10 Apr 24 09:43 Virtual_Client_for_Linux_Windows_7- KVM.qcow2.type
+  
+# qemu-img info Fedora_20_ext3.img
+  image: Fedora_20_ext3.img
+  file format: raw
+  virtual size: 80G (85899345920 bytes)
+  disk size: 80G
+   
+# virt-df Fedora_20_ext3.img
+   Filesystem 1K-blocks Used Available Use%
+   Fedora_20_ext3.img.bak:/dev/sda1 81642216 3381656 74113360 5%
+    
+# yum install -y libguestfs-tools
+     
+# guestfish
+     Welcome to guestfish, the libguestfs filesystem interactive shell for editing virtual machine filesystems.
+     Type: 'help' for help on commands
+     'man' to read the manual
+     'quit' to quit the shell
+      
+      ><fs> add Fedora_20_ext3.img
+      ><fs> run
+      100% ⟦▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒⟧ 00:00
+      ><fs> list-filesystems
+      /dev/sda1: ext3
+      ><fs> e2fsck-f /dev/sda1
+      ><fs> resize2fs-size /dev/sda1 28G
+      ><fs> list-filesystems
+      /dev/sda1: ext3
+      ><fs> e2fsck-f /dev/sda1
+      ><fs> quit
+       
+# qemu-img info Fedora_20_ext3.img
+       image: Fedora_20_ext3.img
+       file format: raw
+       virtual size: 80G (85899345920 bytes)
+       disk size: 80G
+        
+# virt-df Fedora_20_ext3.img
+	Filesystem 1K-blocks Used Available Use%
+	Fedora_20_ext3.img:/dev/sda1 28899452 3369560 24061888 12%
+	 
+# qemu-img resize Fedora_20_ext3.img 30G
+	 Image resized.
+	  
+# qemu-img info Fedora_20_ext3.img image: Fedora_20_ext3.img
+	  file format: raw
+	  virtual size: 30G (32212254720 bytes) disk size: 30G
+--------------
 
 sprawdzenie partycji w pliku dysku wirutalizacji np. kvm 
 # virt-filesystems --long --parts --blkdevs -h -a fef36e7a-0958-4edf-ab5f-33af7fb26257 
