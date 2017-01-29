@@ -1,0 +1,128 @@
+#! /bin/bash
+### BEGIN INIT INFO
+# Provides:            Privoxy Server
+# Required-Start:      $remote_fs $syslog
+# Required-Stop:       $remote_fs $syslog
+# Should-Start:        $local_fs
+# Should-Stop:         $local_fs
+# Default-Start:       2 3 4 5
+# Default-Stop:        0 1 6
+# Short-Description:   Privoxy Server
+# Description:         Privoxy Server
+### END INIT INFO
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DESC="Privoxy Server"
+NAME=privoxy
+DAEMON=/usr/sbin/$NAME
+OWNER=privoxy
+RUNDIR=/var/run/privoxy
+LOGDIR=/var/log/privoxy
+. /lib/init/vars.sh
+#. /lib/lsb/init-functions
+
+if [ ! -d "$LOGDIR" ]; then
+    mkdir -m 755 $LOGDIR
+    chown $OWNER:adm $LOGDIR
+fi
+
+test -x $DAEMON || exit 0
+
+set -e
+
+test -r /etc/default/$NAME && . /etc/default/$NAME
+
+FILES=(/etc/privoxy/privoxy_*.conf)
+if [ -r "${FILES[0]}" ]
+then
+  CONFIGS=()
+  for FILE in "${FILES[@]}"
+  do
+    NAME=${FILE#/etc/privoxy/}
+    NAME=${NAME%.conf}
+    if [ $# -ne 2 ]
+    then
+      CONFIGS+=($NAME)
+    elif [ "privoxy_$2" == "$NAME" ]
+    then
+      CONFIGS=($NAME)
+      break
+    fi
+  done
+
+  if [ ${#CONFIGS[@]} == 0 ];
+  then
+    echo "Config not exist for: $2" >&2
+    exit 1
+  fi
+else
+  CONFIGS=(privoxy)
+fi
+
+CONFIG_NUM=${#CONFIGS[@]}
+for ((i=0; i < $CONFIG_NUM; i++))
+do
+  NAME=${CONFIGS[${i}]}
+  PIDFILE="/var/run/privoxy/${NAME}.pid"
+  DAEMON_ARGS="--pidfile $PIDFILE"
+
+  case "$1" in
+    start)
+      echo -n "Starting $DESC: "
+      mkdir -p $RUNDIR
+      touch $PIDFILE
+      chown $OWNER:adm $RUNDIR $PIDFILE
+      chmod 755  $RUNDIR
+
+      if [ -n "$ULIMIT" ]
+      then
+        ulimit -n $ULIMIT
+      fi
+      if start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --user $OWNER  -- $DAEMON_ARGS /etc/privoxy/${NAME}.conf
+      then
+        echo "$NAME."
+      else
+        echo "FAILED."
+      fi
+      ;;
+
+    stop)
+      echo -n "Stopping $DESC: "
+      if start-stop-daemon --stop --retry=TERM/30/KILL/5 --oknodo --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_ARGS /etc/privoxy/${NAME}.conf
+      then
+        echo "$NAME."
+      else
+        echo "FAILED."
+      fi
+      rm -f $PIDFILE
+      sleep 1
+      ;;
+
+    restart|force-reload)
+      ARGS=($@)
+      CONFIG=${ARGS[@]:1}
+      ${0} stop $CONFIG
+      ${0} start $CONFIG
+      exit 0
+      ;;
+
+    status)
+      echo -n "$DESC ($NAME) is "
+      if
+	start-stop-daemon --status --exec $DAEMON --pidfile $PIDFILE
+      then
+        echo "RUNNING."
+      else
+        echo "NOT RUNNING."
+      fi
+      ;;
+
+    *)
+      N=/etc/init.d/$NAME
+      echo -e "Usage: $N \e[1m{start|stop|restart|force-reload|status}" >&2
+      exit 1
+      ;;
+  esac
+done
+
+exit 0

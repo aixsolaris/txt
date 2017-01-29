@@ -1,0 +1,11 @@
+611  iptables -P INPUT ACCEPT
+  612  iptables -P FORWARD ACCEPT
+  613  iptables -P OUTPUT ACCEPT
+  614  iptables -t nat -F
+  615  iptables -t mangle -F
+  616  iptables -F
+  617  iptables -X
+  618  iptables -L -n -v
+  619  iptables -t nat -A POSTROUTING -o wlan3 -j MASQUERADE
+  620  iptables -A FORWARD -i eth0 -o wlan3 -m state -–state RELATED,ESTABLISHED -j ACCEPT
+

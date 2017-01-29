@@ -1,5 +1,5 @@
 
-
+findmnt
 -------------------
 xming - uruchamianie xclock po przelogowaniu na su - user
 

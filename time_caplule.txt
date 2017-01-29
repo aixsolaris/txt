@@ -1,0 +1,10 @@
+
+linux
+mount.cifs //172.16.1.1/Data -o sec=ntlm /mnt/
+
+windows
+
+\\172.16.1.1\Data
+user: \admin
+pass: 
+
