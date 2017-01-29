@@ -1,0 +1,211 @@
+Apache server logs
+
+63.203.109.38 - - [02/Sep/2003:09:51:09 -0700] "GET /custer HTTP/1.1"
+301 248 "http://search.msn.com/results.asp?RS=CHECKED&FORM=MSNH&
+v=1&q=%22little+big+Horn%22" "Mozilla/4.0 (compatible; MSIE 6.0;
+Windows NT 5.0)"
+
+cut -f1 -d" " access_log1
+    65.214.44.29
+    74.6.87.40
+    65.214.44.29
+    74.6.86.212
+
+cut -f1 -d" " access_log1 | sort | uniq > IP1
+cut -f1 -d" " access_log1 | sort | uniq -c
+sort -m IP1 IP2 | uniq > IP1_union_IP2
+sort -m IP1 IP2 | uniq -c | grep "^ *2" | \
+tr -s " " | cut -f3 -d" " > IP1_intersection_IP2
+sort -m IP1 IP2 | uniq -c
+grep -c 04/Feb/2008 access_log
+tail access_log | awk {'print $1 " " $9 " " $10'}
+egrep 'gif|jpg|png' /var/log/httpd/access_log*|grep -v taragana|cut -f10 -d' '|awk '{if($0 != "-") sum = sum + $0} END {print sum}'
+gzip -dc access_log.gz | less
+egrep '(\.gif |\.jpg |\.png )' access_log
+gzip -dc access_log.gz | egrep -vc '(\.gif |\.jpg |\.png )'
+
+How many hits today?
+% grep -c `date '+%d/%b/%Y'` access_log
+
+How many unique visitors today?
+% grep `date '+%d/%b/%Y'` access_log | cut -d" " -f1 | sort -u | wc -l
+
+How many hits in a particular day?
+% grep -c 01/Jan/2001 access_log
+
+Compressed log file, e.g. January 1, 2001
+% gzip -dc access_log.gz | grep -c 01/Jan/2001
+
+grep `date '+04/Feb/2008'` access_log | cut -d" " -f1 | sort -u | wc -l
+
+head -1 access_log; tail -1 access_log
+
+How to figure out the bandwith consumption (in bytes)?
+
+% grep `date '+%d/%b/%Y'` access_log | awk '{ s += $10 } END {print s}'
+
+This month:
+% grep `date '+../%b/%Y'` access_log | awk '{ s += $10 } END {print s}'
+
+Used by Googlebot:
+% grep googlebot access_log | awk '{ s += $10 } END {print s}'
+
+Used by some rogue user from IP-address 169.254.22.12:
+% grep ^169.254.22.12 access_log | awk '{ s += $10 } END {print s}'
+
+---------------
+
+grep BotDetectCaptcha.ashx u_ex141220.log | cut -c1-13| uniq -c
+grep POST u_ex141220.log | cut -c1-13| uniq -c
+grep POST u_ex141220.log | cut -d " " -f 4 | sort | uniq -c
+grep BotDetectCaptcha.ashx u_ex141220.log | cut -c1-16| uniq -c
+grep "Nov 23" asm | cut -d : -f 3| cut -d " " -f3- | sort | uniq -c
+grep "Nov 22" limity_asm | cut -d : -f 6- | cut -d . -f1 | sort | uniq -c
+grep "Nov 22" limity_asm_all | grep by.e-konsulat | cut -d : -f 6- | cut -d . -f1 | sort | uniq -c
+cat limity_asm_all  | grep cs= | wc -l
+cat limity_asm_all | grep Geolocation | wc -l
+cat limity_asm_all | grep "Request blocked" | wc -l
+cat limity_ltm_all | grep "code 400" | grep "by.domena.pl" | wc -l
+cat limity_ltm_all | grep "code 500" | grep "by.domena.pl" | wc -l
+cat limity_ltm_all | grep "code 503" | grep "by.domena.pl" | wc -l
+grep "by.domena.pl" limity_ltm_all | cut -d : -f5-| cut -d " " -f13-| sort | uniq -c
+cat limity_asm_all | grep "Web scraping attack: Finis" | wc -l
+
+
+grep abc plik 	Drukowanie wierszy zawieraj¹cych ci¹g abc
+fgrep -f plik1 plik2 	Drukowanie wierszy z pliku plik1 zawieraj¹cych wyra¿enia zapisane w plik2
+grep '^abc' plik 	Drukowanie wierszy rozpoczynaj¹cych siê ci¹giem abc
+grep '^[a-z]' plik 	Drukowanie wierszy rozpoczynaj¹cych siê ma³¹ liter¹
+grep ';$' plik
+	Drukowanie wierszy, w których ostatnim znakiem jest rednik
+grep '\.$' plik
+	Drukowanie wierszy, w których ostatnim znakiem jest kropka
+grep '\$$' plik 	Drukowanie wierszy, w których ostatnich znakiem jest $
+grep '\.\..*' plik
+	Drukowanie wierszy zawieraj¹cych co najmniej dwie kolejne kropki
+egrep ';+' plik
+	Drukowanie wierszy zawieraj¹cych co najmniej jeden rednik
+grep '^.[A-Z]' plik
+	Drukowanie wierszy, w których drugim znakiem jest wielka litera
+egrep '(^.[A-Z])|(^..[A-Z])' plik
+	Drukowanie wierszy, w których wielka litera jest drugim lub trzecim znakiem
+egrep 'a(_)?1' plik
+	Drukowanie wierszy zawieraj¹cych ci¹g a1 lub a_1
+
+grep Polecenie "grep" s³u¿y do wyszukiwania wzorcu z pliku i przekierowywania. Komenda ta wywietla linie pasuj¹ce lub nie do okrelonego wzorca. Grep jest niezwykle rozbudowana komend¹, lecz zwykle u¿ywamy tylko kilku jego podstawowych opcji.
+Uproszczona sk³adnia:
+grep [-v] wzorzec [Plik(i)]
+
+-v oznacza negacjê wzorca (czyli wzorzec nie mo¿e wyst¹piæ);
+wzorzec - to ³añcuch znaków do wyszukiwania, mo¿e zawieraæ wyra¿enie regularne;
+Plik(i) - lista plików do przeszukania;
+
+Podstawowe elementy wyra¿eñ regularnych:
+
+. -dowolny pojedynczy znak;
+$ -dopasuj poprzedzaj¹ce wyra¿enie do koñca wiersza;
+^ -dopasuj wystêpuj¹ce po operatorze wyra¿enie do pocz¹tku wiersza;
+* -dopasuj zero lub wiêcej wyra¿eñ znaku poprzedzaj¹cego operator;
+\ -oznacza ominiêcie specjalnego znaczenia znaku np:"\*";
+[ ] -dopasuj dowolny znak w nawiasie;
+[-] -dopasuj dowolny znak z przedzia³u [0-9];
+[^] -dopasuj znak, który nie znajduje siê w nawiasie;
+
+Kontrola wyjcia i przeszukiwania:
+-c - zamiast wywietlaæ linie ze znalezionym fragmentem wywietla liczbê znalezionych linii;
+-L - nie wywietla znalezionego fragmentu tylko pokazuje nazwy plików, w których nie by³o tego ci¹gu znaków;
+-l - odwrotnie do poprzedniego polecenia, wywietla pliki w których znalaz³o dany ci¹g znaków;
+-n - wywietlany jest numer linii w pliku w których znaleziono dany ci¹g znaków;
+-w - wyszukuje tylko ca³e s³owa;
+-x - wyszukuje tylko ca³e linie;
+
+Kontrola wejcia:
+-f plik - dane do wyszukania s¹ brane po jednym wierszu z 'plik';
+-h - po podaniu kilku plików do przeszukania po znalezieniu danego ci¹gu znaków przy danej linii nie bêdzie podany plik w którym siê to znajdowa³o;
+-i - ignoruje du¿e litery, tzn. je¿eli podamy do wyszukania s³owo 'ala', to poka¿e nam 'ALA', 'Ala', 'AlA' itd.;
+-r - gdy plik podany do przeszukania jest katalogiem, to zostan¹ przeszukane wszystkie pliki w tym katalogu;
+
+Przyk³ady:
+grep 'Ala' plik -znajduje wyraz 'Ala' w pliku;
+grep 'A[lg]a' plik -znajduje wyraz 'Ala' lub 'Aga';
+grep 'A.a' plik -znajduje wyrazy takie jak 'Ala' 'Aga' itp;
+grep '^Ala' plik - znajduje wyraz 'Ala' na pocz¹tku wersu;
+grep 'Go*gle' plik - znajduje wyraz 'Gogle', 'Google' itd;
+grep '[0-9]' - znajduje dowolny ci¹g znaków z zakresu od 0 do 9;	
+	  
+-----------
+
+gzip -dc access_log.gz | less
+
+How many lines (hits) there are in the log file?
+Uncompressed log file
+    % wc -l access_log
+Gzip compressed log file
+    % gzip -dc access_log.gz | wc -l 
+How many page views?
+Uncompressed log file
+    % egrep '(\.gif |\.jpg |\.png )' access_log
+Compressed log file
+    % gzip -dc access_log.gz | egrep -vc '(\.gif |\.jpg |\.png )'
+How many hits today?
+    % grep -c `date '+%d/%b/%Y'` access_log
+How many unique visitors today?
+    % grep `date '+%d/%b/%Y'` access_log | cut -d" " -f1 | sort -u | wc -l
+How many hits in a particular day?
+% head -1 access_log; tail -1 access_log
+%gzip -dc access_log.gz | head -1 ; gzip -dc access_log.gz | tail -1
+ 
+Uncompressed log file
+
+% cut -d" " -f4 access_log | cut -d"/" -f1 | uniq
+
+How does the line number 15927 or lines 15920 - 15929 look like?
+Uncompressed log file
+    % grep -n '.*' access_log | grep '^15927\:'
+    15927:foo.example.com - - [20/Jan/2002:11:23:45 +0200] "GET ...
+
+    % grep -n '.*' access_log | grep '^1592.\:'
+    15920:foo.example.com - - [20/Jan/2002:11:23:40 +0200] "GET ...
+    15921:foo.example.com - - [20/Jan/2002:11:23:41 +0200] "GET ...
+    15922:foo.example.com - - [20/Jan/2002:11:23:41 +0200] "GET ...
+    ...
+
+Compressed log file
+    % gzip -dc access_log.gz | grep -n '.*' | grep '^15927\:'
+    15927:foo.example.com - - [20/Jan/2002:11:23:45 +0200] "GET ...
+    % gzip -dc access_log.gz | grep -n '.*' | grep '^1592.\:'
+    15920:foo.example.com - - [20/Jan/2002:11:23:40 +0200] "GET ...
+    15921:foo.example.com - - [20/Jan/2002:11:23:41 +0200] "GET ...
+    15922:foo.example.com - - [20/Jan/2002:11:23:41 +0200] "GET ...
+    ...
+
+How to figure out the bandwith consumption (in bytes)?
+Today:
+    % grep `date '+%d/%b/%Y'` access_log | awk '{ s += $10 } END {print s}'
+This month:
+    % grep `date '+../%b/%Y'` access_log | awk '{ s += $10 } END {print s}'
+    569477018
+Used by some rogue user from IP-address 169.254.22.12:
+    % grep ^169.254.22.12 access_log | awk '{ s += $10 } END {print s}'
+    46760880
+How to delete partial GET requests from the log?
+Partial content requests are usually generated by download managers to speed the downloading of big files and Adobe Acrobat Reader to fetch PDF documents page by page. In this example 206 requests generated by Acrobat reader are deleted so that they don't infate the hit count.
+    % grep -v '\.pdf .* 206 ' access_log > new_log
+
+How to compress a selected portion from a log?
+Use gzip to compress log entries in May 2002
+    % grep ' \[../May/2002\:' access_log | gzip -9c > access_log-2002-05.gz
+
+Use bzip2 to compress log entries in May 2002
+    % grep ' \[../May/2002\:' access_log | bzip2 > access_log-2002-05.bz2
+
+See in real-time how the log file grows?
+Using tail
+    % tail -f access_log
+
+With less you must hit "F" (and Ctrl-C q to quit)
+    % less access_log
+
+---------------
+
+

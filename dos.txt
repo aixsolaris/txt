@@ -1,0 +1,72 @@
+httpry  -i wlan0  -f timestamp,dest-ip,host,status-code,reason-phrase -o /var/log/httpry/wlan0.log&
+
+httpry  -i wlan0  -f Timestamp,Source-IP,Dest-IP,Source-Port,Dest-Port,Direction,Method,Host,Request-URI,HTTP-Version,Status-Code,Reason-Phrase,Accept,Accept-Charset,Accept-Encoding,Accept-Language,Authorization,Expect,From,Host,If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since,Max-Forwards,Proxy-Authorization,Range,Referer,TE,User-Agent,x-forwarded-for
+
+
+hashlimit
+
+Moduł ten działa na podobnej zasadzie jak limit, jednak ma nad nim jedną przewagę – sprawdza limity dla każdego adresu z osobna zamiast dla ogółu połączeń. Wykorzystując moduł limit jeden klient może zablokować wszystkie inne próby połączeń. Moduł hashlimit ograniczy tylko tego klienta, pozostawiając innym możliwość połączenia.
+
+Moduł hashlimit zapisuje dane w katalogu /proc/net/ipt_hashlimit/, w którym tworzy pliki o nazwie listy.
+
+Opcje modułu:
+
+    –hashlimit-upto pakiety/czas – maksymalna średnia liczba dopasowań w jednostce czasu (sec, minute, hour, day).
+    –hashlimit-above avg – minimalna średnia liczba dopasowań.
+    –hashlimit-mode tryb – tryb sprawdzania: dstip (adres docelowy), srcip (adres źródłowy), dstport (port docelowy), srcport (port źródłowy).
+    –hashlimit-srcmask długość – długość maski adresu źródłowego.
+    –hashlimit-dstmask długość – długość maski adresu docelowego.
+    –hashlimit-name name – nazwa listy.
+    –hashlimit-burst liczba – liczba w serii, domyślnie 5.
+    –hashlimit-htable-size liczba – rozmiar listy.
+    –hashlimit-htable-max liczba – maksymalna liczba wpisów na liście.
+    –hashlimit-htable-gcinterval – interwał między oczyszczaniem wpisów na liście (w milisekundach).
+    –hashlimit-htable-expire – po jakim czasie (w milisekundach) wpis na liście wygasa (jest czyszczony). Domyślnie 10000 ms = 10 sek.
+
+
+
+
+https://github.com/netoptimizer/network-testing/blob/master/iptables/iptables_local_socket_hack.sh
+
+
+Restrict the Number of Parallel Connections To a Server Per Client IP
+
+You can use connlimit module to put such restrictions. To allow 3 ssh connections per client host, enter:
+# iptables -A INPUT -p tcp --syn --dport 22 -m connlimit --connlimit-above 3 -j REJECT
+
+Set HTTP requests to 20:
+# iptables -p tcp --syn --dport 80 -m connlimit --connlimit-above 20 --connlimit-mask 24 -j DROP
+
+
+    --connlimit-above 3 : Match if the number of existing connections is above 3.
+    --connlimit-mask 24 : Group hosts using the prefix length. For IPv4, this must be a number between (including) 0 and 32.
+
+ Log and Drop Packets with Limited Number of Log Entries
+
+The -m limit module can limit the number of log entries created per time. This is used to prevent flooding your log file. To log and drop spoofing per 5 minutes, in bursts of at most 7 entries .
+# iptables -A INPUT -i eth1 -s 10.0.0.0/8 -m limit --limit 5/m --limit-burst 7 -j LOG --log-prefix "IP_SPOOF A: "
+# iptables -A INPUT -i eth1 -s 10.0.0.0/8 -j DROP
+
+
+Find CIDR for 69.171.228.40, enter:
+# whois 69.171.228.40 | grep CIDR
+
+
+netstat -an | grep tcp | awk '{print $5}' | cut -f 1 -d : | sort | uniq -c | sort -n
+
+
+iptables -A INPUT -p tcp --syn --dport 80 -m connlimit --connlimit-above 15 --connlimit-mask 32 -j REJECT --reject-with tcp-reset 
+
+iptables -A INPUT -m state --state RELATED,ESTABLISHED -m limit --limit 150/second --limit-burst 160 -j ACCEPT
+
+
+
+netstat -ant | awk '{print $6}' | sort | uniq -c | sort -n
+
+
+
+
+
+
+
+

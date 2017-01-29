@@ -1,0 +1,66 @@
+
+# krok
+# cron setings
+
+# krok
+# problem skąd brać ip do blokowania
+# 1. Z logów serwra IIS
+# 2. Z logów F5.
+# 3. Z LB - Haproxy.
+# 1,2 tailf >> file 
+
+
+# scalamy pliki do jednego 
+# do sprawdzenia sortowanie i uniq
+cat server1 server2 server3 server4 | sort| uniq > out_server
+
+#cat /dev/null > server1 
+# zapisywać do pliku z godziną zapewni unikalność nazwy 
+
+
+# badamy poprawność danych linia po lini
+# Check if IP format is num.num.num.num / num between 0..255
+# if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then echo "Looks like an IPv4 IP # address"; else     echo "oops"; fi
+
+# dopisać czytanie z pliku out_server
+if [[ $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then echo $ip > out_server_parser; else  echo "oops"; fi
+
+
+# roznica pomiedzy plikami nowości w stosunku do pliku 1
+#grep -f mniejszy większy
+#grep -v -f mniejszy wiekszy
+#grep -Fxvf test1 test2 >test3
+#comm -13 <(sort test1) <(sort test2)
+#diff test2 test1 | grep "<" | sed 's/^<//g'  > test3
+
+grep -Fxvf ip_deny out_server_parser > ip_server_to_asa
+
+cat ip_deny ip_server_to_asa | sort > ip_deny
+
+
+# krok 
+# formatujemy to formatu ASA
+# objectgroup host x.x.x.x
+
+ip_asa_host
+
+# krok 
+# wykonujemy skrypt perla zapisujący do ASA
+
+# krok 
+# backup file 
+# 
+# ip_asa_host + data + godzina + .txt
+# ip_deny + data + godzina + .txt
+#
+
+
+
+# Finally check that all four parts are in the range 0 to 255:
+#for OCTET in `echo $IsIP | tr '.' ' '; do
+#    if [[ $OCTET -lt 0 || $OCTET -gt 255 ]]; then
+#        echo "Parameter '$IsIP' does not look like in IP Address (octet '$OCTET' in not in range 0-255).";
+#    fi
+#done
+
+

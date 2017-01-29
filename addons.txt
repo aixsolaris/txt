@@ -1,0 +1,50 @@
+
++Firefox
+cookies manager+
+export cookies
+feedly
+ghostery
+httfox
+noscript
+random agent spoofer
+scriptsh
+self-destructing cookies
+xmarks
+u adblock
+disconnect
+firebug
+flashblock
+greasemonkye
+live httpheaders
+privacy badger
+requestpolicy
+
+app.telemetry peg speed monitor
+betterPrivacy
+change hosts
+self-destructiong cookies
+temper data
+xmarks
+yslow
+
+aplikacje 
+feedly
+
++Chrome
+feedly
+Ghostery
+Https Evrywhere
+Ip addres and domain information
+Live HTTP Headers
+Privacey Badger
+ScriptSafe
+uBlock Origion
+xmarks Bookmark sync
+
+
+
+
+
+
+
+

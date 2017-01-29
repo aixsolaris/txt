@@ -1,0 +1,136 @@
+                                 EDYTOR vi
+
+ KOMENDY PODSTAWOWE
+
+ vi filename  - wywoluje edytor, zbior "filename" zostaje skopiowany do bufora
+                edytora
+ ZZ rm lub :x - wyjscie z edytora z zapisaniem dokonanych poprawek do zbioru
+                "filename"
+ :w           - zapisuje zmiany do zbioru "filename"
+ :q!          - wyjscie z edytora bez zachowania poprawek
+ :w name      - zapisuje zawartosc bufora edytora do zbioru "name"
+ :x,yw name   - zapisuje linie o numerach od x do y do zbioru "name"
+ :e name      - laduje zbior "name" do bufora edytora
+ :e!          - wymazuje dokonane modyfikacje i udostepnia ponownie ten sam
+                zbior do edycji
+ :r name      - wczytuje zbior "name" za linie biezaca
+===============================================================================
+
+ PRZESUWANIE KURSORA
+ 0 - przesuwa do pierwszego znaku w linii
+ $ - przesuwa do ostatniego znaku w linii
+ b - przesuwa w lewo o jedno slowo
+ w - przesuwa w prawo o jedno slowo
+ + - przesuwa do poczatku nastepnej linii
+ -- - przesuwa do poczatku poprzedniej linii
+ Enter  - przesuwa do poczatku nastepnej linii
+ j  - przesuwa do nastepnej linii w tej samej kolumnie
+ k  - przesuwa do poprzedniej linii w tej samej kolumnie
+ 1G - przesuwa do poczatku tekstu
+ G  - przesuwa do poczatku ostatniej linii tekstu
+ nG - przesuwa do linii o numerze n
+ {  -  przesuwa do poczatku poprzedniego paragrafu
+ }  -  przesuwa do konca biezacego lub nastepnego paragrafu
+ CTRL+f - przesuwa tekst o 1 ekran do przodu
+ CTRL+b - przesuwa tekst o 1 ekran do tylu
+ H - przesuwa kursor do gornego lewego rogu ekranu
+ M - przesuwa kursor do srodka ekranu
+ L - przesuwa kursor do lewego dolnego rogu ekranu
+===============================================================================
+
+ TRYB WPROWADZANIA TEKSTU
+
+ i - tekst wstawiany jest przed biezaca pozycja kursora
+ I - przesuwa kursor do poczatku linii biezacej i umozliwia wstawianie tekstu
+     od tej pozycji
+ o - tworzy nowa linie ponizej biezacej i umozliwia wprowadzanie tam tekstu
+ O - tworzy nowa linie powyzej biezacej i umozliwia wprowadzenie tam tekstu
+ a - umozliwia wprowadzanie tekstu za biezaca pozycja kursora
+ A - przesuwa kursor na koniec linii biezacej i umozliwia wprowadzanie tekstu
+     od tej pozycji
+ESC - wyjscie z trybu wprowadzania tekstu, powrot do trybu wprowadzania komend
+===============================================================================
+
+ TRYB WPROWADZANIA KOMEND
+
+ Komendy usuwajace:
+ x   - usuwa 1 znak na biezacej pozycji kursora
+ nx  - usuwa n znakow na prawo od biezacej pozycji kursora poczawszy
+ X   - usuwa 1 znak na lewo od biezacej pozycji kursora
+ nX  - usuwa n znakow na lewo od biezacej pozycji kursora
+ D   - usuwa znaki od biezacej pozycji kursora do konca linii
+ dd  - usuwa linie biezaca
+ ndd - usuwa n linii, poczawszy od linii biezacej
+ d0  - usuwa znaki od poczatku linii biezacej do pozycji kursora
+ dH,dM,dL - usuwa znaki od poz. kursora odpowiednio do gory, srodka i dolu
+            ekranu
+ dG   - usuwa od linii biezacej do konca zbioru
+ d/abcdEnter - usuwa znaki od biezacej poz. kursora do podanego ciagu znakow
+              "abcd"
+
+ Komendy modyfikujace:
+
+ rx         - zamienia znak na poz. kursora na znak x
+ RtextECS   - zamienia znaki od poz. kursora na wpisywany "text" (nadpisuje)
+ stextESC   - usuwa 1 znak na poz. kursora i wstawia w to miejsce "text"
+ cctextESC  - zamienia cala linie biezaca na wpisywany "text"
+ CtextESC   - zamienia znaki od poz. kursora do konca linii na wpisywany text
+ cabcdEnter - pozwala zamienic  znaki od poz. kursora do zadanego ciagu znakow 
+              "abcd" i wprowadzic w to miejsce inny ciag znakow wpisanych
+              z klawiatury i zakonczony nacisnieciem klawisza ESC
+ ~    -  na poz. kursora zamienia litere: mala na duza i odwrotnie
+ ddp  - zamienia miejscami kolejne dwie linie: linie biezaca z nastepna
+
+ Komendy przeszukujace:
+
+ abcdEnter - szuka (do przodu) ciagu znakow "abcd" od poz. kursora do pierwsze-
+             go znalezionego ciagu, lub do konca zbioru, a nastepnie od poczatku
+             zbioru do linii biezacej
+ ?abcdEnter - szuka (do tylu) jak wyzej
+ n lub N    - szuka dalej w tym samym kierunku ( n), lub w przeciwnym ( N)
+ :x,ys/str1/str2/g - w liniach od x do y zamienia ciag znakow str1 na str2
+
+ Komendy przesuwajace tekst do bufora tymczasowego:
+
+ d, dd, D   - usuwaja do bufora tymczasowego tekst, zgodnie z opisem komend
+              usuwajacych
+ yy lub Y   - kopiuje linie biezaca do bufora tymczasowego 
+ nyy lub nY - kopiuje n linii, od linii biezacej poczawszy, do bufora tymcza-
+              sowego
+
+ Komendy umozliwiajace odzyskanie tekstu z bufora tymczasowego i wstawienie
+ go do zbioru:
+
+ p - wstawia tekst z bufora tymczasowego za linie biezaca
+ P - wstawia tekst z bufora tymczasowego przed linie biezaca
+
+ Komendy umozliwiajace manipulowanie blokami tekstu oznakowanymi markerami:
+
+ mx  -  (x- dowolna mala litera) oznakowuje markerem x miejsce w zbiorze,
+        wskazane kursorem
+ 'x  - powoduje powrot kursora do pozycji oznaczonej markerem x 
+ d'x - powoduje usuniecie bloku tekstu od linii oznaczonej markerem x do 
+       biezacej poz. kursora i przeslanie go do bufora tymczasowego
+ :'a,'bm. - kopiuje oznakowane linie od  a do  b za linie biezaca
+ :'a,'bd  - usuwa oznakowane linie od  a do  b
+ :'a,'bw filename   - zapisuje oznakowane linie od  a do  b do nowego zbioru
+                     "filename"
+ :'a,w filename     - zapisje linie od  a do linii biezacej do nowego zbioru 
+                      filename
+ :'a,'bw! filename  - nadpisuje istniejacy zbior it filename liniami a-b
+ :'a,'bw>> filename - oznakowane linie od a-b dopisuje na koniec zbioru 
+                      "filename"
+
+ Komendy odwolujace sie do buforow nazwanych (nazwa buforu poprzedzona
+ podwojnym apostrofem: ") - kilka przykladow:
+
+ "b3dd - usuwa z tekstu trzy linie i przesyla je do bufora o nazwie  b
+ "byy  - kopiuje linie biezaca do bufora o nazwie  b
+ "bp   - wstawia zawartosc bufora o nazwie  b za linie biezaca
+ "bP   - wstawia zawartosc bufora o nazwie  b przed linie biezaca
+
+ Komendy inne:
+
+ J - laczy dwie linie w jedna: dopisuje nastepna do linii biezacej
+ u - kasuje ostanio wprowadzona modyfikacje
+ . - powtarza ostatnio wprowadzona zmiane

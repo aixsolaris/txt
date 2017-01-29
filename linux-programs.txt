@@ -1,0 +1,194 @@
+--- programy-
+tor
+pidgin
+privoxy
+polipo
+spotify
+pidgin
+keepass
+pgadmin
+gedit
+bluefish
+chatzilla
+conky
+connect-proxy
+cowpatty
+fwbuilder
+gstreamer
+hdparm
+hping3
+htop
+iftop
+iotop
+iperf
+ipplan
+iptraf-ng
+jnettop
+keepassx
+ksplice
+mc
+pan
+polipo
+powertop
+privoxy
+rdesktop
+system-config-lvm
+torcs
+torcs-data
+wifi-radar
+wireshark-gnome
+xchat
+xterm
+vnstat
+bwm-ng
+mitmproxy
+monit
+keepelive
+Burp Suite
+
+
+--- network monitoring -----
+dnstop -l 3 wlan0
+dsniff
+iptraf
+httpry
+pkstat
+bmon
+iftop
+nethogs
+tcptrack
+iperf
+tshark
+trafshow
+http://www.trafficmeter.org/
+netstat -i 
+
+top
+vmstat
+mpstat
+sar
+lsof
+free -t -m
+
+--- wydajnosc 
+top
+vmstat
+iostat
+iotop
+strace
+pidstat
+
+iostat
+iostat -xtc 5 10
+
+
+Performance Monitoring Tools 
+ Monitoring tools
+- top, vmstat, ps, iostat, netstat, sar, perf, turbostat 
+- Kernel tools
+- /proc, sysctl, AltSysRq
+- Networking
+- ethtool, ifconfig
+- Profiling
+- oprofile, strace, ltrace, systemtap, perf
+
+iostat -dmxz 3
+sar -n DEV 3
+mtr, nmap, and netcap.
+dnstop
+fail2ban
+screan ctrl+a+d
+screan -r
+tmux
+jnettop
+ShellinABox 
+vnstat 
+
+strace
+ltrace
+systemtap (kto zabił proces, ktor restartuje program itd. )
+
+context switches - 
+pidstat -w -t -I -p pid
+jstack pid
+iostat -x -d sda 1
+
+sar -d -R 1
+strace -f -T -p 666
+ile instrukcji procesora?
+
+performers inżynier
+
+iostat 
+avgqu-sh
+- oczekiwało tyle i tyle zapytan do dysku w ciagu ostatniej sekundy read/write
+await
+- ile milisekund mineło od mometu dostatia odpowiedzi 
+svctim
+- to jest fizyczny odczytania z dysku
+qutim = await -svctim - czas zmarnowany na czekanie
+- mozna poprosic o oczekiwanie watki 
+
+--- monitorowanie JAVA
+online java thread dump analyzer
+jps
+jcmd 
+monitorowanie JVM
+pamiec
+
+jmap
+jhat - nie najleprzy do zrzutu
+eclips MAT
+
+GC
+jstat
+gcviwer
+
+Kod:
+jstack
+TDA
+Profilery
+
+Ogólne:
+jcmd
+Jinfo
+jconsol
+jvisualvm
+JMission Control - platny
+
+jstat -gcutil pid 5000
+jmap -dump:format=b,file=/opt/duump.hprof pid
+
+APM   - kombajny do monitorowania
+Dynatrace   
+AppDynamics
+Plumbr
+
+--- 
+
+lsof | grep libc | awk '{print $1}' | sort | uniq
+cpulimit
+gcore
+ipcsc -m
+
+lynis/tiger - narzedzie do audytu bezpieczenstwa linux'a
+
+ ccze - kolorowanie logów
+
+seahorse - password and keys
+me-tv
+sop-cast
+bum - startup aplication
+polipo
+tor
+privoxy
+modem manager GUI 
+
+online accounts prefferences
+tweak tool
+meld
+diffuse
+xchat
+
+
+
